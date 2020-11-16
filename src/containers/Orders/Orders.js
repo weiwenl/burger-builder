@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import orderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class Orders extends Component {
     state = {
-        order: [],
+        orders: [],
         loading: true
     }
 
@@ -20,7 +19,7 @@ class Orders extends Component {
                     id: key
                 });
             }
-            this.setState({loading: false, order: fetchedOrders});
+            this.setState({loading: false, orders: fetchedOrders});
         })
         .catch(err => {
             this.setState({loading: false});
@@ -30,8 +29,12 @@ class Orders extends Component {
     render (){
         return(
             <div>
-                <Order />
-                <Order />
+                {this.state.orders.map(order => (
+                    <Order 
+                        key={order.id} 
+                        ingredients={order.ingredients}
+                        price={order.price} />
+                ))}
             </div>
         );
     }
